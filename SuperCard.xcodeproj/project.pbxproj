@@ -21,6 +21,7 @@
 		8C94E0C6193622A400F264EC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C94E0A8193622A400F264EC /* UIKit.framework */; };
 		8C94E0CE193622A400F264EC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8C94E0CC193622A400F264EC /* InfoPlist.strings */; };
 		8C94E0D0193622A400F264EC /* SuperCardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C94E0CF193622A400F264EC /* SuperCardTests.m */; };
+		8C94E0DB193623AD00F264EC /* SuperCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C94E0DA193623AD00F264EC /* SuperCardView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		8C94E0CB193622A400F264EC /* SuperCardTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SuperCardTests-Info.plist"; sourceTree = "<group>"; };
 		8C94E0CD193622A400F264EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8C94E0CF193622A400F264EC /* SuperCardTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SuperCardTests.m; sourceTree = "<group>"; };
+		8C94E0D9193623AD00F264EC /* SuperCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperCardView.h; sourceTree = "<group>"; };
+		8C94E0DA193623AD00F264EC /* SuperCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuperCardView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 				8C94E0B6193622A400F264EC /* Main.storyboard */,
 				8C94E0B9193622A400F264EC /* ViewController.h */,
 				8C94E0BA193622A400F264EC /* ViewController.m */,
+				8C94E0D9193623AD00F264EC /* SuperCardView.h */,
+				8C94E0DA193623AD00F264EC /* SuperCardView.m */,
 				8C94E0BC193622A400F264EC /* Images.xcassets */,
 				8C94E0AB193622A400F264EC /* Supporting Files */,
 			);
@@ -251,6 +256,7 @@
 			files = (
 				8C94E0BB193622A400F264EC /* ViewController.m in Sources */,
 				8C94E0B5193622A400F264EC /* AppDelegate.m in Sources */,
+				8C94E0DB193623AD00F264EC /* SuperCardView.m in Sources */,
 				8C94E0B1193622A400F264EC /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
