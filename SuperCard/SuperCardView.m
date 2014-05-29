@@ -17,7 +17,7 @@
 
 #pragma mark - property
 
-#define DEFAULT_FACE_SCALE_FACTOR
+#define DEFAULT_FACE_SCALE_FACTOR 0.9
 
 - (void)setFaceCardScaleFactor:(CGFloat)faceCardScaleFactor
 {
@@ -27,10 +27,25 @@
 
 - (CGFloat)faceCardScaleFactor
 {
-    if (!_faceCardScaleFactor) _faceCardScaleFactor = DEFAULT_FACE_SCALE_FACTOR;
+    if (!_faceCardScaleFactor) _faceCardScaleFactor = DEFAULT_FACE_SCALE_FACTOR ;
     return _faceCardScaleFactor;
 }
 
+
+- (NSString*)rankAsString
+{
+    return @[@"?", @"A", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"J", @"Q", @"K"][self.rank];
+}
+
+#pragma mark - gestrue handling
+- (void)pinch:(UIPinchGestureRecognizer* )gesture
+{
+    if (gesture.state == UIGestureRecognizerStateChanged ||
+        gesture.state == UIGestureRecognizerStateEnded) {
+        self.faceCardScaleFactor = self.faceCardScaleFactor*gesture.scale;
+        gesture.scale = 1.0;
+    }
+}
 
 #pragma mark - drawing
 
@@ -57,26 +72,36 @@
     [[UIColor blackColor] setStroke];
     [roundedRect stroke];
     
-    UIImage* faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", [self rankAsString], self.suit]];
-    if (faceImage) {
-        CGRect imageRect = CGRectInset(self.bounds, self.bounds.size.width * (1.0-self.faceCardScaleFactor), self.bounds.size.height * (1.0-self.faceCardScaleFactor));
-        [faceImage drawInRect:imageRect];
-    } else {
+    if (self.faceUp) {
+        UIImage* faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", [self rankAsString], self.suit]];
+        if (faceImage) {
+            CGRect imageRect = CGRectInset(self.bounds, self.bounds.size.width * (1.0-self.faceCardScaleFactor), self.bounds.size.height * (1.0-self.faceCardScaleFactor));
+            [faceImage drawInRect:imageRect];
+        } else {
+            [self drawPips];
+        }
         
+        [self drawConners];
+    } else {
+        UIImage* cardback = [UIImage imageNamed:@"cardback"];
+        [cardback drawInRect:self.bounds];
     }
-    
-    [self drawConners];
 }
 
-- (void)drawPips
+- (void)pushContextRotationUpsideDown
 {
-    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, self.bounds.size.width, self.bounds.size.height);
+    CGContextRotateCTM(context, M_PI);
 }
 
-- (NSString*)rankAsString
+- (void)popContext
 {
-    return @[@"?", @"A", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"J", @"Q", @"K"][self.rank];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextRestoreGState(context);
 }
+
+#pragma mark - conners
 
 - (void)drawConners
 {
@@ -93,10 +118,16 @@
     textBound.size = [connerText size];
     [connerText drawInRect:textBound];
     
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, self.bounds.size.width, self.bounds.size.height);
-    CGContextRotateCTM(context, M_PI);
+    [self pushContextRotationUpsideDown];
     [connerText drawInRect:textBound];
+    [self popContext];
+}
+
+
+#pragma mark - pips
+- (void)drawPips
+{
+    
 }
 
 #pragma mark - initialization
@@ -106,6 +137,7 @@
     self.backgroundColor = nil;
     self.opaque = NO;
     self.contentMode = UIViewContentModeRedraw;
+    [self addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)]];
 }
 
 - (id)initWithFrame:(CGRect)frame
